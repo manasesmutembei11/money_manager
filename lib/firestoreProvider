@@ -1,0 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class FirestoreDataProvider {
+  final CollectionReference _expensesCollection =
+      FirebaseFirestore.instance.collection('expenses');
+
+  // Get all expenses in the collection.
+  Stream<List<Expense>> getExpenses() {
+    return _expensesCollection.snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Expense.fromSnapshot(doc)).toList());
+  }
+
+  // Add a new expense to the collection.
+  Future<void> addExpense(Expense expense) {
+    return _expensesCollection.add(expense.toMap());
+  }
+
+  // Update an existing expense in the collection.
+  Future<void> updateExpense(String expenseId, Expense expense) {
+    return _expensesCollection.doc(expenseId).update(expense.toMap());
+  }
+
+  // Delete an expense from the collection.
+  Future<void> deleteExpense(String expenseId) {
+    return _expensesCollection.doc(expenseId).delete();
+  }
+}
