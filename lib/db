@@ -1,0 +1,28 @@
+class Expense {
+  String title;
+  double amount;
+  String category;
+  DateTime date;
+
+  Expense({this.title, this.amount, this.category, this.date});
+
+  // Create a factory method to parse a document snapshot to an instance of Expense.
+  factory Expense.fromSnapshot(DocumentSnapshot snapshot) {
+    return Expense(
+      title: snapshot.data()['title'],
+      amount: snapshot.data()['amount'],
+      category: snapshot.data()['category'],
+      date: snapshot.data()['date'].toDate(),
+    );
+  }
+
+  // Convert the expense data to a map.
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'amount': amount,
+      'category': category,
+      'date': date,
+    };
+  }
+}
